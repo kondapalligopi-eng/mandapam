@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #fdfbf6;
+  color: #1c1917;
+}
+
+/* Subtle paisley / mandala texture used behind hero sections.
+   Pure CSS so no asset hop. */
+.bg-paisley {
+  background-color: #6f1c25;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(230, 176, 35, 0.10) 0, transparent 28%),
+    radial-gradient(circle at 80% 70%, rgba(230, 176, 35, 0.08) 0, transparent 28%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0, transparent 35%);
+}
