@@ -11,7 +11,7 @@ export function MandapamDetail() {
         <div className="text-6xl mb-4">🪷</div>
         <h1
           className="text-3xl text-maroon-900 mb-3"
-          style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+          style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
         >
           Mandapam not found
         </h1>
@@ -39,7 +39,7 @@ export function MandapamDetail() {
             </p>
             <h1
               className="text-3xl sm:text-5xl text-white leading-tight"
-              style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
             >
               {m.name}
             </h1>
@@ -78,7 +78,7 @@ export function MandapamDetail() {
           <section className="mb-10">
             <h2
               className="text-2xl text-maroon-900 mb-3"
-              style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
             >
               About this venue
             </h2>
@@ -88,7 +88,7 @@ export function MandapamDetail() {
           <section className="mb-10">
             <h2
               className="text-2xl text-maroon-900 mb-4"
-              style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
             >
               What's included
             </h2>

@@ -38,7 +38,7 @@ export function Contact() {
           </p>
           <h1
             className="text-3xl sm:text-5xl text-white leading-tight"
-            style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+            style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
           >
             Let's plan your day
           </h1>
@@ -57,7 +57,7 @@ export function Contact() {
                 <div className="text-5xl mb-4">🌸</div>
                 <h2
                   className="text-2xl text-maroon-900 mb-2"
-                  style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+                  style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
                 >
                   Thank you!
                 </h2>

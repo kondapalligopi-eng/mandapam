@@ -17,7 +17,7 @@ export function Layout() {
             </p>
             <p
               className="text-3xl text-white mb-2"
-              style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
             >
               ShubhMandap
             </p>

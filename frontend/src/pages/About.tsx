@@ -9,7 +9,7 @@ export function About() {
           </p>
           <h1
             className="text-3xl sm:text-5xl text-white leading-tight"
-            style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+            style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
           >
             Built for Bengaluru weddings
           </h1>
@@ -40,7 +40,7 @@ export function About() {
               <div key={label} className="rounded-2xl border-2 border-cream-200 bg-white p-5 text-center">
                 <p
                   className="text-3xl text-maroon-800"
-                  style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+                  style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
                 >
                   {stat}
                 </p>
@@ -51,7 +51,7 @@ export function About() {
 
           <h2
             className="text-2xl text-maroon-900 pt-4"
-            style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+            style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
           >
             What we believe
           </h2>
