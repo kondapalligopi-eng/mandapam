@@ -46,7 +46,7 @@ export function Mandapams() {
             </p>
             <h1
               className="text-3xl sm:text-4xl text-white leading-tight"
-              style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
             >
               All Kalyana Mandapams
             </h1>
@@ -150,7 +150,7 @@ export function Mandapams() {
                   <div className="p-5 flex-1 flex flex-col">
                     <h3
                       className="text-lg text-maroon-900 group-hover:text-maroon-700 transition-colors leading-tight mb-1"
-                      style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+                      style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
                     >
                       {m.name}
                     </h3>

@@ -8,16 +8,28 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: #fdfbf6;
+  background: #ffffff;
   color: #1c1917;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Subtle paisley / mandala texture used behind hero sections.
-   Pure CSS so no asset hop. */
+/* Lift display headings off the busy festive backdrops for readability */
+.bg-paisley h1,
+.bg-paisley h2 {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/* Festive wedding-mandap backdrop — vivid sunset of magenta, fuchsia,
+   marigold orange, saffron gold, and a kiss of teal. Pure CSS, no asset hop. */
 .bg-paisley {
-  background-color: #6f1c25;
+  background-color: #db2777;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(230, 176, 35, 0.10) 0, transparent 28%),
-    radial-gradient(circle at 80% 70%, rgba(230, 176, 35, 0.08) 0, transparent 28%),
-    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0, transparent 35%);
+    radial-gradient(circle at 10% 15%, rgba(250, 204, 21, 0.75) 0, transparent 42%),
+    radial-gradient(circle at 92% 18%, rgba(249, 115, 22, 0.70) 0, transparent 48%),
+    radial-gradient(circle at 95% 90%, rgba(217, 70, 239, 0.65) 0, transparent 50%),
+    radial-gradient(circle at 18% 92%, rgba(244, 63, 94, 0.65) 0, transparent 48%),
+    radial-gradient(circle at 55% 55%, rgba(45, 212, 191, 0.22) 0, transparent 40%),
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.12) 0, transparent 55%);
 }

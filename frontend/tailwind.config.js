@@ -7,40 +7,57 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Royal maroon — the brand primary for ShubhMandap.
+        // Festive red — the brand primary for ShubhMandap.
+        // Names kept as `maroon` so existing class usage (text-maroon-700 etc.)
+        // doesn't need a global rename.
         maroon: {
-          50:  '#fbf2f3',
-          100: '#f6e4e6',
-          200: '#ecc1c5',
-          300: '#dc8b94',
-          400: '#c75664',
-          500: '#a8333f',
-          600: '#8a232e',
-          700: '#6f1c25',
-          800: '#591a21',
-          900: '#3f1217',
-          950: '#240a0d',
+          50:  '#fef2f2',
+          100: '#fde4e4',
+          200: '#fbc7c7',
+          300: '#f59e9e',
+          400: '#ec6a6a',
+          500: '#dc2626',
+          600: '#c11616',
+          700: '#a01010',
+          800: '#800f0f',
+          900: '#5e0a0a',
+          950: '#2e0505',
         },
-        // Festive gold — accent / CTAs / dividers.
+        // Marigold yellow — accent / CTAs / dividers.
+        // Names kept as `gold` for the same reason.
         gold: {
-          50:  '#fdf9ed',
-          100: '#fbf0c8',
-          200: '#f6df8e',
-          300: '#f0c84f',
-          400: '#e6b023',
-          500: '#c8901a',
-          600: '#a06d15',
-          700: '#7a5212',
-          800: '#583a0e',
-          900: '#3a260a',
+          50:  '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
         },
+        // White / very light neutrals (was warm cream).
         cream: {
-          50:  '#fdfbf6',
-          100: '#faf5e8',
-          200: '#f1e6c8',
-          300: '#e5d49a',
-          400: '#d4b865',
-          500: '#b89c46',
+          50:  '#ffffff',
+          100: '#fafafa',
+          200: '#f3f4f6',
+          300: '#e5e7eb',
+          400: '#d1d5db',
+          500: '#9ca3af',
+        },
+        // Auspicious green — secondary accent (badges, success, ornaments).
+        green: {
+          50:  '#f0fdf4',
+          100: '#dcfce7',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#16a34a',
+          600: '#15803d',
+          700: '#14532d',
+          800: '#0f3a21',
+          900: '#082817',
         },
         warm: {
           50: '#fafaf9',
@@ -57,7 +74,7 @@ export default {
       },
       fontFamily: {
         sans:    ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['"Playfair Display"', 'Georgia', 'serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.3s ease-in-out',

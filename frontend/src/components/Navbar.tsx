@@ -20,7 +20,7 @@ export function Navbar() {
               </p>
               <p
                 className="text-xl sm:text-2xl text-maroon-800 group-hover:text-maroon-600 transition-colors"
-                style={{ fontFamily: '"Playfair Display", Georgia, serif', fontWeight: 700 }}
+                style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
               >
                 ShubhMandap
               </p>
