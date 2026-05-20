@@ -5,6 +5,7 @@ import { Mandapams } from '@/pages/Mandapams';
 import { MandapamDetail } from '@/pages/MandapamDetail';
 import { Categories } from '@/pages/Categories';
 import { ServiceCategory } from '@/pages/ServiceCategory';
+import { ListBusiness } from '@/pages/ListBusiness';
 import { About } from '@/pages/About';
 import { Contact } from '@/pages/Contact';
 import { MANDAPAMS } from '@/data/mandapams';
@@ -30,6 +31,7 @@ export const routes: RouteRecord[] = [
         // Pre-render a static page for every service category at build time.
         getStaticPaths: () => Object.keys(SERVICES).map((slug) => `/services/${slug}`),
       },
+      { path: 'list-your-business', Component: ListBusiness },
       { path: 'about', Component: About },
       { path: 'contact', Component: Contact },
     ],

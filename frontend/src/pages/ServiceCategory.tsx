@@ -51,7 +51,7 @@ export function ServiceCategory() {
             </div>
             <div className="w-full sm:w-auto flex flex-col gap-3 sm:items-end">
               <Link
-                to="/contact"
+                to={`/list-your-business?category=${service.slug}`}
                 className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-xs sm:text-sm font-bold tracking-[0.15em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg shrink-0"
               >
                 <span aria-hidden="true" className="text-base leading-none">＋</span>

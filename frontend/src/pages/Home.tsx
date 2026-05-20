@@ -294,10 +294,10 @@ export function Home() {
             </p>
           </div>
           <Link
-            to="/contact"
+            to="/list-your-business?category=venues"
             className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-sm font-bold tracking-[0.18em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg shrink-0"
           >
-            Get in touch
+            List your venue
           </Link>
         </div>
       </section>
