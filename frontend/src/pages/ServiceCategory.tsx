@@ -49,15 +49,24 @@ export function ServiceCategory() {
                 {selectedCity ? ` in ${selectedCity}` : ' across Karnataka'}
               </p>
             </div>
-            <label className="relative w-full sm:w-80">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400">🔍</span>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={service.searchPlaceholder}
-                className="w-full pl-11 pr-4 py-2.5 rounded-full bg-white/95 text-warm-800 text-sm placeholder:text-warm-400 ring-2 ring-white/40 focus:ring-gold-300 focus:outline-none shadow"
-              />
-            </label>
+            <div className="w-full sm:w-auto flex flex-col gap-3 sm:items-end">
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-xs sm:text-sm font-bold tracking-[0.15em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg shrink-0"
+              >
+                <span aria-hidden="true" className="text-base leading-none">＋</span>
+                {service.listLabel}
+              </Link>
+              <label className="relative w-full sm:w-80">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400">🔍</span>
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={service.searchPlaceholder}
+                  className="w-full pl-11 pr-4 py-2.5 rounded-full bg-white/95 text-warm-800 text-sm placeholder:text-warm-400 ring-2 ring-white/40 focus:ring-gold-300 focus:outline-none shadow"
+                />
+              </label>
+            </div>
           </div>
         </div>
       </section>

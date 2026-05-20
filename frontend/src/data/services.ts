@@ -36,6 +36,7 @@ export type ServiceConfig = {
   unit: string; // plural noun for the result count, e.g. "artists"
   emoji: string;
   searchPlaceholder: string;
+  listLabel: string; // CTA for vendors to add their own listing
   vendors: Vendor[];
 };
 
@@ -47,6 +48,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'studios',
     emoji: '📷',
     searchPlaceholder: 'Search studios, cities, styles…',
+    listLabel: 'List your studio',
     vendors: [
       { name: 'Lensa Wedding Co.', city: 'Bengaluru', specialty: 'Candid & cinematic films', rating: 4.8, reviews: 312, priceLabel: '₹45,000 – ₹1.5L', img: photo('couple,wedding', 61), handpicked: true },
       { name: 'Kshana Studios', city: 'Mysuru', specialty: 'Traditional & candid', rating: 4.7, reviews: 221, priceLabel: '₹35,000 – ₹1.2L', img: photo('indian,wedding', 62), handpicked: true },
@@ -68,6 +70,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'artists',
     emoji: '💄',
     searchPlaceholder: 'Search artists, cities, styles…',
+    listLabel: 'List as an artist',
     vendors: [
       { name: 'Glow by Anaha', city: 'Bengaluru', specialty: 'HD & airbrush bridal looks', rating: 4.8, reviews: 264, priceLabel: '₹15,000 – ₹45,000', img: photo('bride,makeup', 101), handpicked: true },
       { name: 'Roopa Studio', city: 'Mysuru', specialty: 'Traditional South-Indian bridal', rating: 4.7, reviews: 181, priceLabel: '₹12,000 – ₹35,000', img: photo('indian,bride', 102), handpicked: true },
@@ -84,6 +87,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'teams',
     emoji: '🎀',
     searchPlaceholder: 'Search planners, cities, themes…',
+    listLabel: 'List your business',
     vendors: [
       { name: 'Shubha Events', city: 'Bengaluru', specialty: 'Full-service planning & décor', rating: 4.8, reviews: 198, priceLabel: '₹2L – ₹15L', img: photo('wedding,decoration', 111), handpicked: true },
       { name: 'Marigold Décor Co.', city: 'Mysuru', specialty: 'Floral mandap & stage design', rating: 4.7, reviews: 142, priceLabel: '₹1.5L – ₹8L', img: photo('flowers,wedding', 112), handpicked: true },
@@ -100,6 +104,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'artists',
     emoji: '🪷',
     searchPlaceholder: 'Search mehndi artists, cities…',
+    listLabel: 'List as an artist',
     vendors: [
       { name: 'Henna by Zoya', city: 'Bengaluru', specialty: 'Bridal & Arabic mehndi', rating: 4.8, reviews: 221, priceLabel: '₹4,000 – ₹18,000', img: photo('henna,hands', 121), handpicked: true },
       { name: 'Mehndi Magic', city: 'Mysuru', specialty: 'Intricate full-hand designs', rating: 4.7, reviews: 134, priceLabel: '₹3,500 – ₹15,000', img: photo('mehndi,hand', 122) },
@@ -116,6 +121,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'acts',
     emoji: '🥁',
     searchPlaceholder: 'Search DJs, bands, choreographers…',
+    listLabel: 'List your act',
     vendors: [
       { name: 'Beats by Bangalore', city: 'Bengaluru', specialty: 'Wedding DJ & sound', rating: 4.7, reviews: 176, priceLabel: '₹25,000 – ₹1.2L', img: photo('dj,party', 131), handpicked: true },
       { name: 'Nadaswaram Ensemble', city: 'Mysuru', specialty: 'Traditional muhurtham music', rating: 4.8, reviews: 142, priceLabel: '₹18,000 – ₹60,000', img: photo('music,instrument', 132), handpicked: true },
@@ -132,6 +138,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'vendors',
     emoji: '🎁',
     searchPlaceholder: 'Search invites, favors, packers…',
+    listLabel: 'List your business',
     vendors: [
       { name: 'Inkand Co.', city: 'Bengaluru', specialty: 'Custom & digital invites', rating: 4.7, reviews: 154, priceLabel: '₹80 – ₹450 / card', img: photo('wedding,invitation', 141), handpicked: true },
       { name: 'Trousseau Tales', city: 'Mysuru', specialty: 'Trousseau packing & favors', rating: 4.6, reviews: 88, priceLabel: '₹200 – ₹1,200 / unit', img: photo('gift,box', 142) },
@@ -148,6 +155,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'caterers',
     emoji: '🍛',
     searchPlaceholder: 'Search caterers, cuisines, cities…',
+    listLabel: 'List your catering',
     vendors: [
       { name: 'Adyar Annapoorna Catering', city: 'Bengaluru', specialty: 'Pure-veg South Indian', rating: 4.8, reviews: 312, priceLabel: '₹450 – ₹1,200 / plate', img: photo('indian,food', 151), handpicked: true },
       { name: 'Mysuru Royal Kitchen', city: 'Mysuru', specialty: 'Mysore-style feast', rating: 4.7, reviews: 198, priceLabel: '₹500 – ₹1,400 / plate', img: photo('thali,meal', 152), handpicked: true },
@@ -164,6 +172,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'purohits',
     emoji: '🛕',
     searchPlaceholder: 'Search purohits, rituals, cities…',
+    listLabel: 'Register as purohit',
     vendors: [
       { name: 'Sri Vedavyasa Purohits', city: 'Bengaluru', specialty: 'Vedic weddings & homam', rating: 4.8, reviews: 167, priceLabel: '₹8,000 – ₹35,000', img: photo('pooja,ritual', 161), handpicked: true },
       { name: 'Mysuru Veda Pathashala', city: 'Mysuru', specialty: 'Madhwa & Smartha rituals', rating: 4.7, reviews: 121, priceLabel: '₹7,000 – ₹30,000', img: photo('temple,fire', 162), handpicked: true },
@@ -180,6 +189,7 @@ export const SERVICES: Record<string, ServiceConfig> = {
     unit: 'studios',
     emoji: '📷',
     searchPlaceholder: 'Search studios, locations, themes…',
+    listLabel: 'List your studio',
     vendors: [
       { name: 'Hampi Heritage Films', city: 'Hampi', specialty: 'Shoots among ancient ruins', rating: 4.9, reviews: 142, priceLabel: '₹35,000 – ₹1.2L', img: photo('couple,heritage', 171), handpicked: true },
       { name: 'Coorg Mist Studio', city: 'Mangaluru', specialty: 'Coffee-estate & misty hills', rating: 4.8, reviews: 118, priceLabel: '₹40,000 – ₹1.3L', img: photo('couple,nature', 172), handpicked: true },
