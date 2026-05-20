@@ -1,6 +1,53 @@
 import { Link } from 'react-router-dom';
 import { MANDAPAMS } from '@/data/mandapams';
 
+// Festive gradient palette — cycled across the Karnataka city tiles.
+const CITY_TINTS = [
+  'from-maroon-600 to-maroon-400',
+  'from-fuchsia-500 to-rose-400',
+  'from-orange-500 to-gold-400',
+  'from-amber-500 to-yellow-400',
+  'from-emerald-500 to-green-400',
+  'from-teal-500 to-emerald-400',
+  'from-rose-500 to-orange-400',
+  'from-pink-500 to-fuchsia-400',
+];
+
+// Cities & district headquarters across Karnataka.
+const KARNATAKA_CITIES: { name: string; emoji: string }[] = [
+  { name: 'Bengaluru', emoji: '🏙️' },
+  { name: 'Mysuru', emoji: '🏰' },
+  { name: 'Mangaluru', emoji: '🌊' },
+  { name: 'Hubballi', emoji: '🏬' },
+  { name: 'Dharwad', emoji: '📚' },
+  { name: 'Belagavi', emoji: '🏯' },
+  { name: 'Kalaburagi', emoji: '🕌' },
+  { name: 'Vijayapura', emoji: '🕋' },
+  { name: 'Davanagere', emoji: '🍪' },
+  { name: 'Ballari', emoji: '🏜️' },
+  { name: 'Shivamogga', emoji: '🌴' },
+  { name: 'Tumakuru', emoji: '🛕' },
+  { name: 'Raichur', emoji: '🏰' },
+  { name: 'Bidar', emoji: '🏯' },
+  { name: 'Hassan', emoji: '🛕' },
+  { name: 'Udupi', emoji: '🥥' },
+  { name: 'Chitradurga', emoji: '🏰' },
+  { name: 'Mandya', emoji: '🌾' },
+  { name: 'Chikkamagaluru', emoji: '☕' },
+  { name: 'Karwar', emoji: '⛵' },
+  { name: 'Ramanagara', emoji: '⛰️' },
+  { name: 'Kolar', emoji: '⛏️' },
+  { name: 'Chikkaballapura', emoji: '🌄' },
+  { name: 'Hosapete', emoji: '🗿' },
+  { name: 'Gadag', emoji: '🛕' },
+  { name: 'Bagalkote', emoji: '🏯' },
+  { name: 'Haveri', emoji: '🌻' },
+  { name: 'Koppal', emoji: '🗿' },
+  { name: 'Yadgir', emoji: '🏞️' },
+  { name: 'Madikeri', emoji: '🏔️' },
+  { name: 'Chamarajanagar', emoji: '🐯' },
+];
+
 export function Home() {
   const featured = MANDAPAMS.slice(0, 3);
 
@@ -72,6 +119,42 @@ export function Home() {
               <span className="absolute bottom-5 left-1 text-3xl drop-shadow-2xl">🪔</span>
               <span className="absolute top-1/2 left-0 text-2xl drop-shadow-2xl">🎊</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Browse by Karnataka city ─────────────────────────────────── */}
+      <section className="py-12 sm:py-14 bg-white border-b border-cream-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-10">
+            <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-gold-700 uppercase mb-2">
+              Across Karnataka
+            </p>
+            <h2
+              className="text-2xl sm:text-3xl text-maroon-900"
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+            >
+              Find mandapams by city
+            </h2>
+            <div className="mx-auto mt-3 h-0.5 w-16 bg-gold-400 rounded-full" />
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6 sm:gap-y-7">
+            {KARNATAKA_CITIES.map(({ name, emoji }, i) => (
+              <Link
+                key={name}
+                to="/mandapams"
+                className="group flex flex-col items-center gap-2.5"
+              >
+                <div
+                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br ${CITY_TINTS[i % CITY_TINTS.length]} flex items-center justify-center text-2xl sm:text-3xl shadow-md ring-4 ring-white group-hover:ring-gold-200 group-hover:shadow-xl group-hover:-translate-y-1 transition-all`}
+                >
+                  <span aria-hidden="true" className="drop-shadow">{emoji}</span>
+                </div>
+                <span className="text-[11px] sm:text-xs font-semibold text-warm-700 group-hover:text-maroon-700 transition-colors text-center leading-tight">
+                  {name}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -211,10 +294,10 @@ export function Home() {
             </p>
           </div>
           <Link
-            to="/contact"
+            to="/list-your-business?category=venues"
             className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-sm font-bold tracking-[0.18em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg shrink-0"
           >
-            Get in touch
+            List your venue
           </Link>
         </div>
       </section>
