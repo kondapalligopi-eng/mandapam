@@ -30,6 +30,7 @@ export function Navbar() {
           <nav className="hidden md:flex items-center gap-8">
             <NavLink to="/" className={navLinkClass} end>Home</NavLink>
             <NavLink to="/mandapams" className={navLinkClass}>Mandapams</NavLink>
+            <NavLink to="/categories" className={navLinkClass}>Categories</NavLink>
             <NavLink to="/about" className={navLinkClass}>About</NavLink>
             <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
           </nav>
