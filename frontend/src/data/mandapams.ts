@@ -1,8 +1,12 @@
+import { KARNATAKA_DISTRICTS } from './karnataka';
+
 export type Mandapam = {
   slug: string;
   name: string;
   locality: string;
   city: string;
+  district: string;
+  taluk: string;
   capacityMin: number;
   capacityMax: number;
   priceFrom: number;       // INR per day, starting price
@@ -17,12 +21,15 @@ export type Mandapam = {
   address: string;
 };
 
-export const MANDAPAMS: Mandapam[] = [
+// Hand-written flagship venues (richer detail).
+const CURATED: Mandapam[] = [
   {
     slug: 'sri-mahalakshmi',
     name: 'Sri Mahalakshmi Kalyana Mandapam',
     locality: 'Jayanagar',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Bengaluru South',
     capacityMin: 500,
     capacityMax: 1200,
     priceFrom: 85000,
@@ -48,6 +55,8 @@ export const MANDAPAMS: Mandapam[] = [
     name: 'Shri Rajalakshmi Convention Hall',
     locality: 'Malleshwaram',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Bengaluru North',
     capacityMin: 300,
     capacityMax: 800,
     priceFrom: 60000,
@@ -73,6 +82,8 @@ export const MANDAPAMS: Mandapam[] = [
     name: 'Mantapa Gardens',
     locality: 'Whitefield',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Bengaluru East',
     capacityMin: 250,
     capacityMax: 700,
     priceFrom: 95000,
@@ -98,6 +109,8 @@ export const MANDAPAMS: Mandapam[] = [
     name: 'Lalbagh Grand Kalyana Mantapa',
     locality: 'Basavanagudi',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Bengaluru South',
     capacityMin: 800,
     capacityMax: 2000,
     priceFrom: 1500_00,
@@ -123,6 +136,8 @@ export const MANDAPAMS: Mandapam[] = [
     name: 'Green Meadows Wedding Lawns',
     locality: 'Sarjapur Road',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Anekal',
     capacityMin: 200,
     capacityMax: 600,
     priceFrom: 75000,
@@ -148,6 +163,8 @@ export const MANDAPAMS: Mandapam[] = [
     name: 'Palace Banquet & Convention',
     locality: 'Sadashivanagar',
     city: 'Bengaluru',
+    district: 'Bengaluru Urban',
+    taluk: 'Bengaluru North',
     capacityMin: 400,
     capacityMax: 1500,
     priceFrom: 2000_00,
@@ -169,6 +186,102 @@ export const MANDAPAMS: Mandapam[] = [
     address: 'Sankey Rd, Sadashivanagar, Bengaluru 560080',
   },
 ];
+
+// ── Generated venues ─────────────────────────────────────────────────────
+// A few sample mandapams per district (spread across its taluks) so browsing
+// any district surfaces venues in and around that place. Deterministic, so
+// names/prices/ratings stay stable across reloads and SSG builds.
+const kebab = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+const NAME_TEMPLATES = [
+  'Sri {deity} Kalyana Mantapa',
+  '{place} Grand Convention',
+  '{place} Gardens',
+  'Sri {deity} Mahal',
+  '{place} Kalyana Bhavana',
+  '{deity} Residency & Hall',
+];
+const DEITIES = ['Lakshmi', 'Venkateshwara', 'Rama', 'Krishna', 'Shiva', 'Ganesha', 'Durga', 'Saraswathi', 'Anjaneya', 'Basaveshwara'];
+const EMOJIS = ['🛕', '🕌', '🎊', '🌸', '🌿', '👑', '💒', '🏛️'];
+const TINTS = [
+  'from-maroon-700 to-maroon-500',
+  'from-maroon-600 to-gold-500',
+  'from-rose-500 to-gold-400',
+  'from-maroon-800 to-maroon-600',
+  'from-emerald-700 to-gold-500',
+  'from-orange-500 to-gold-400',
+  'from-fuchsia-600 to-rose-400',
+  'from-maroon-900 to-gold-600',
+];
+const FEATURES_POOL = [
+  'A/C banquet hall',
+  'Bride & groom rooms',
+  'Vegetarian catering on-site',
+  'Pooja altar & homam pit',
+  'Ample car parking',
+  'Stage & decoration package',
+  'Open lawn area',
+  'Generator backup',
+  'Valet parking',
+  'In-house dining hall',
+];
+const PRICE_TIERS = [
+  { from: 40000, label: '₹40,000 – ₹1.2L per day' },
+  { from: 60000, label: '₹60,000 – ₹1.8L per day' },
+  { from: 85000, label: '₹85,000 – ₹2.5L per day' },
+  { from: 120000, label: '₹1.2L – ₹3.5L per day' },
+];
+const CAP_TIERS = [
+  { min: 150, max: 400 },
+  { min: 250, max: 700 },
+  { min: 400, max: 1000 },
+  { min: 500, max: 1500 },
+];
+
+const GENERATED: Mandapam[] = (() => {
+  const out: Mandapam[] = [];
+  let id = 7; // continue past the curated venues
+  for (const { district, taluks } of KARNATAKA_DISTRICTS) {
+    if (district === 'Bengaluru Urban') continue; // already covered by CURATED
+    const picks = taluks.slice(0, 3); // a few surrounding taluks
+    for (const taluk of picks) {
+      id += 1;
+      const deity = DEITIES[id % DEITIES.length];
+      const name = NAME_TEMPLATES[id % NAME_TEMPLATES.length]
+        .replace('{deity}', deity)
+        .replace('{place}', taluk);
+      const tier = id % 4;
+      const cap = CAP_TIERS[tier];
+      const price = PRICE_TIERS[tier];
+      const start = id % FEATURES_POOL.length;
+      const features = Array.from({ length: 4 }, (_, k) => FEATURES_POOL[(start + k) % FEATURES_POOL.length]);
+      out.push({
+        slug: `${kebab(district)}-${kebab(taluk)}-${id}`,
+        name,
+        locality: taluk,
+        city: taluk,
+        district,
+        taluk,
+        capacityMin: cap.min,
+        capacityMax: cap.max,
+        priceFrom: price.from,
+        priceLabel: price.label,
+        rating: Math.round((4.2 + ((id * 3) % 7) / 10) * 10) / 10,
+        reviews: 30 + (id * 17) % 280,
+        features,
+        description: `A well-appointed kalyana mantapa in ${taluk}, ${district} district — a popular choice for weddings and receptions in and around ${taluk}.`,
+        emoji: EMOJIS[id % EMOJIS.length],
+        tint: TINTS[id % TINTS.length],
+        phone: `+91 9${String(400000000 + (id * 1234567) % 599999999).padStart(9, '0')}`,
+        address: `${taluk}, ${district}, Karnataka`,
+      });
+    }
+  }
+  return out;
+})();
+
+export const MANDAPAMS: Mandapam[] = [...CURATED, ...GENERATED];
 
 export function getMandapam(slug: string): Mandapam | undefined {
   return MANDAPAMS.find((m) => m.slug === slug);

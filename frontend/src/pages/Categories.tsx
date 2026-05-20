@@ -86,6 +86,52 @@ export function Categories() {
           </div>
         </div>
       </section>
+
+      {/* ── Wedding Invitation Maker ─────────────────────────────────── */}
+      <section className="pb-12 sm:pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-pink-50 to-rose-100 ring-1 ring-rose-200/60 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 items-center">
+            <div>
+              <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-pink-600 uppercase mb-2">
+                Free wedding tools
+              </p>
+              <h2
+                className="text-2xl sm:text-3xl text-pink-700"
+                style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+              >
+                Wedding Invitation Maker
+              </h2>
+              <p className="text-sm text-warm-600 mt-2 max-w-md">
+                Design and share your invites in minutes — pick a template, add
+                your details, and download or send digitally.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-3">
+              {[
+                { title: 'Wedding Card Designs', emoji: '💌', desc: 'Printable & digital cards' },
+                { title: 'Invitation Video Templates', emoji: '🎬', desc: 'Animated video invites' },
+                { title: 'Save the Date Templates', emoji: '📅', desc: 'Announce your big day' },
+              ].map(({ title, emoji, desc }) => (
+                <Link
+                  key={title}
+                  to="/contact"
+                  className="group flex items-center gap-3 rounded-xl bg-white/80 hover:bg-white ring-1 ring-rose-200/70 hover:ring-pink-300 px-4 py-3 transition-all"
+                >
+                  <span aria-hidden="true" className="text-2xl shrink-0">{emoji}</span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-bold text-pink-700 group-hover:text-pink-800 leading-tight">
+                      {title}
+                    </span>
+                    <span className="block text-xs text-warm-500">{desc}</span>
+                  </span>
+                  <span aria-hidden="true" className="ml-auto text-pink-400 group-hover:translate-x-0.5 transition-transform">→</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
