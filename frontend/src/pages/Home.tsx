@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MANDAPAMS } from '@/data/mandapams';
 
@@ -48,25 +49,41 @@ const KARNATAKA_CITIES: { name: string; emoji: string }[] = [
   { name: 'Chamarajanagar', emoji: '🐯' },
 ];
 
+// City → district (most match; these are the ones that differ).
+const CITY_DISTRICT: Record<string, string> = {
+  Bengaluru: 'Bengaluru Urban',
+  Mangaluru: 'Dakshina Kannada',
+  Hubballi: 'Dharwad',
+  Hosapete: 'Vijayanagara',
+  Madikeri: 'Kodagu',
+  Karwar: 'Uttara Kannada',
+};
+const districtOf = (city: string) => CITY_DISTRICT[city] ?? city;
+
 export function Home() {
   const featured = MANDAPAMS.slice(0, 3);
+  const [cityQuery, setCityQuery] = useState('');
+
+  const q = cityQuery.trim().toLowerCase();
+  const matchedCities = q ? KARNATAKA_CITIES.filter((c) => c.name.toLowerCase().includes(q)) : [];
+  const shownCities = q ? matchedCities : KARNATAKA_CITIES.slice(0, 8);
 
   return (
     <div>
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-paisley text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/25 via-orange-400/15 to-yellow-300/30" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-8 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-8 items-center">
           <div className="relative max-w-xl">
             {/* Pulsing color halo behind the card */}
             <div aria-hidden="true" className="absolute -inset-3 rounded-3xl bg-gradient-to-br from-yellow-300/60 via-fuchsia-500/55 to-orange-400/55 blur-2xl opacity-80 animate-pulse" />
             {/* Corner marigold ornament */}
             <span aria-hidden="true" className="absolute -top-4 -right-3 text-4xl drop-shadow-xl rotate-12 z-10">🌼</span>
             <div className="relative rounded-2xl p-1 bg-gradient-to-br from-yellow-300 via-fuchsia-500 to-orange-500 shadow-[0_25px_60px_-15px_rgba(217,70,239,0.6)]">
-              <div className="rounded-xl bg-gradient-to-br from-maroon-900/70 via-fuchsia-900/55 to-rose-900/60 backdrop-blur-md p-5 sm:p-6 lg:p-7 ring-1 ring-white/15">
+              <div className="rounded-xl bg-gradient-to-br from-maroon-900/70 via-fuchsia-900/55 to-rose-900/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 ring-1 ring-white/15">
               <div className="flex items-center gap-3 mb-2">
                 <p className="text-[11px] sm:text-xs font-semibold tracking-[0.35em] text-gold-300 uppercase">
-                  Bengaluru · Karnataka
+                  Across Karnataka
                 </p>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-500 text-white text-[10px] font-bold tracking-[0.18em] uppercase shadow">
                   <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
@@ -74,7 +91,7 @@ export function Home() {
                 </span>
               </div>
               <h1
-                className="text-3xl sm:text-4xl lg:text-5xl text-white leading-[1.1] mb-3"
+                className="text-2xl sm:text-3xl lg:text-4xl text-white leading-[1.1] mb-3"
                 style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
               >
                 Find the perfect Kalyana Mandapam
@@ -85,9 +102,10 @@ export function Home() {
                 <span className="flex-1 bg-white" />
                 <span className="flex-1 bg-green-500" />
               </div>
-              <p className="text-sm sm:text-base text-cream-100/90 leading-relaxed mb-5">
-                Hand-picked wedding halls and convention venues across Bengaluru.
-                Capacity, pricing, photos, and direct enquiries — all in one place.
+              <p className="text-sm text-cream-100/90 leading-relaxed mb-4">
+                Hand-picked wedding halls and convention venues across Karnataka —
+                from Bengaluru and Mysuru to Mangaluru, Hubballi and beyond.
+                Capacity, pricing, photos, and direct enquiries, all in one place.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3">
@@ -110,14 +128,14 @@ export function Home() {
 
           {/* Right ornament */}
           <div className="hidden lg:flex justify-end">
-            <div className="relative w-56 h-56">
+            <div className="relative w-44 h-44">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300/60 via-fuchsia-400/40 to-teal-300/30 blur-3xl" />
-              <div className="relative h-full flex items-center justify-center text-[130px] drop-shadow-2xl">
+              <div className="relative h-full flex items-center justify-center text-[100px] drop-shadow-2xl">
                 🛕
               </div>
-              <span className="absolute top-3 right-1 text-4xl drop-shadow-2xl">🌸</span>
-              <span className="absolute bottom-5 left-1 text-3xl drop-shadow-2xl">🪔</span>
-              <span className="absolute top-1/2 left-0 text-2xl drop-shadow-2xl">🎊</span>
+              <span className="absolute top-2 right-0 text-3xl drop-shadow-2xl">🌸</span>
+              <span className="absolute bottom-4 left-0 text-2xl drop-shadow-2xl">🪔</span>
+              <span className="absolute top-1/2 left-0 text-xl drop-shadow-2xl">🎊</span>
             </div>
           </div>
         </div>
@@ -126,7 +144,7 @@ export function Home() {
       {/* ── Browse by Karnataka city ─────────────────────────────────── */}
       <section className="py-12 sm:py-14 bg-white border-b border-cream-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-10">
+          <div className="text-center mb-6 sm:mb-8">
             <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-gold-700 uppercase mb-2">
               Across Karnataka
             </p>
@@ -137,25 +155,56 @@ export function Home() {
               Find mandapams by city
             </h2>
             <div className="mx-auto mt-3 h-0.5 w-16 bg-gold-400 rounded-full" />
-          </div>
-          <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6 sm:gap-y-7">
-            {KARNATAKA_CITIES.map(({ name, emoji }, i) => (
-              <Link
-                key={name}
-                to="/mandapams"
-                className="group flex flex-col items-center gap-2.5"
+
+            {/* City search + dropdown */}
+            <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto mt-6">
+              <label className="relative flex-1">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-warm-400">🔍</span>
+                <input
+                  value={cityQuery}
+                  onChange={(e) => setCityQuery(e.target.value)}
+                  placeholder="Search your city…"
+                  className="w-full pl-11 pr-4 py-2.5 rounded-full bg-cream-50 text-warm-800 text-sm placeholder:text-warm-400 ring-1 ring-cream-300 focus:ring-2 focus:ring-gold-300 focus:outline-none shadow-sm"
+                />
+              </label>
+              <select
+                value={KARNATAKA_CITIES.some((c) => c.name === cityQuery) ? cityQuery : ''}
+                onChange={(e) => setCityQuery(e.target.value)}
+                className={`px-4 py-2.5 rounded-full bg-cream-50 text-sm ring-1 ring-cream-300 focus:ring-2 focus:ring-gold-300 focus:outline-none shadow-sm cursor-pointer sm:w-52 ${cityQuery ? 'text-warm-800' : 'text-warm-400'}`}
+                aria-label="Choose a city"
               >
-                <div
-                  className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br ${CITY_TINTS[i % CITY_TINTS.length]} flex items-center justify-center text-2xl sm:text-3xl shadow-md ring-4 ring-white group-hover:ring-gold-200 group-hover:shadow-xl group-hover:-translate-y-1 transition-all`}
-                >
-                  <span aria-hidden="true" className="drop-shadow">{emoji}</span>
-                </div>
-                <span className="text-[11px] sm:text-xs font-semibold text-warm-700 group-hover:text-maroon-700 transition-colors text-center leading-tight">
-                  {name}
-                </span>
-              </Link>
-            ))}
+                <option value="">All cities</option>
+                {KARNATAKA_CITIES.map((c) => (
+                  <option key={c.name} value={c.name} className="text-warm-800">{c.name}</option>
+                ))}
+              </select>
+            </div>
+            <p className="text-xs text-warm-400 mt-2">
+              {q ? `${matchedCities.length} ${matchedCities.length === 1 ? 'match' : 'matches'}` : 'Popular cities — search to see all 31'}
+            </p>
           </div>
+
+          {shownCities.length === 0 ? (
+            <p className="text-center text-warm-500 py-6">No city matches "{cityQuery}". Try another name.</p>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6 sm:gap-y-7">
+              {shownCities.map(({ name, emoji }) => {
+                const tint = CITY_TINTS[KARNATAKA_CITIES.findIndex((c) => c.name === name) % CITY_TINTS.length];
+                return (
+                  <Link key={name} to={`/mandapams?district=${encodeURIComponent(districtOf(name))}`} className="group flex flex-col items-center gap-2.5">
+                    <div
+                      className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br ${tint} flex items-center justify-center text-2xl sm:text-3xl shadow-md ring-4 ring-white group-hover:ring-gold-200 group-hover:shadow-xl group-hover:-translate-y-1 transition-all`}
+                    >
+                      <span aria-hidden="true" className="drop-shadow">{emoji}</span>
+                    </div>
+                    <span className="text-[11px] sm:text-xs font-semibold text-warm-700 group-hover:text-maroon-700 transition-colors text-center leading-tight">
+                      {name}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -275,30 +324,81 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── CTA strip ────────────────────────────────────────────────── */}
-      <section className="bg-paisley relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/60 via-rose-500/40 to-orange-400/40" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div>
-            <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-gold-300 uppercase mb-1">
-              List your venue
-            </p>
-            <h2
-              className="text-2xl sm:text-3xl text-white"
-              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
-            >
-              Own a Kalyana Mandapam?
-            </h2>
-            <p className="text-sm text-cream-100/80 mt-1">
-              Reach Bengaluru's wedding families directly — no commissions, ever.
-            </p>
+      {/* ── Vendor section ───────────────────────────────────────────── */}
+      <section className="bg-paisley relative overflow-hidden text-white">
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-600/55 via-rose-500/35 to-orange-400/40" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
+            <div>
+              <p className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-[0.3em] text-gold-200 uppercase mb-3">
+                <span aria-hidden="true">💼</span> Are you a vendor?
+              </p>
+              <h2
+                className="text-3xl sm:text-4xl text-white leading-tight"
+                style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+              >
+                Grow your business with ShubhMandap
+              </h2>
+              <ul className="mt-5 space-y-2.5">
+                {[
+                  'Showcase your venue or services to wedding families across Karnataka',
+                  'Reach engaged couples and book more weddings — no commissions, ever',
+                  'Trusted by venues, photographers, caterers and planners statewide',
+                ].map((point) => (
+                  <li key={point} className="flex items-start gap-2.5 text-sm sm:text-base text-cream-100/90">
+                    <span aria-hidden="true" className="mt-0.5 w-5 h-5 shrink-0 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">✓</span>
+                    {point}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to="/list-your-business"
+                className="inline-flex items-center justify-center gap-2 mt-7 px-8 py-3 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-sm font-bold tracking-[0.18em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg"
+              >
+                List your business
+              </Link>
+            </div>
+
+            {/* Sign-up prompt card */}
+            <div className="rounded-2xl bg-white/95 text-warm-800 shadow-2xl p-6 sm:p-8 ring-1 ring-white/30">
+              <h3
+                className="text-xl text-maroon-900 text-center"
+                style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+              >
+                Become a partner
+              </h3>
+              <p className="text-sm text-warm-600 text-center mt-1">
+                Create your free listing in minutes.
+              </p>
+              <Link
+                to="/list-your-business"
+                className="block text-center mt-5 px-6 py-3 rounded-full bg-maroon-600 hover:bg-maroon-700 text-white text-sm font-bold tracking-[0.15em] uppercase transition-colors shadow"
+              >
+                Sign up free
+              </Link>
+              <p className="text-center text-xs text-warm-500 mt-4">
+                Already listed?{' '}
+                <Link to="/contact" className="text-maroon-700 font-semibold hover:underline">Contact us</Link>
+              </p>
+            </div>
           </div>
-          <Link
-            to="/list-your-business?category=venues"
-            className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-gold-400 hover:bg-gold-300 text-maroon-900 text-sm font-bold tracking-[0.18em] uppercase ring-2 ring-gold-300/50 hover:ring-gold-200 transition-all shadow-lg shrink-0"
-          >
-            List your venue
-          </Link>
+
+          {/* Three benefits */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-10 border-t border-white/20">
+            {[
+              { emoji: '🔍', title: 'Reach engaged couples', body: 'Couples find your listing and request details about your business directly.' },
+              { emoji: '✉️', title: 'Get more leads', body: 'Receive enquiries straight to your phone or inbox — no middlemen.' },
+              { emoji: '💍', title: 'Book more weddings', body: 'Feature across Karnataka to drive more bookings and grow your business.' },
+            ].map(({ emoji, title, body }) => (
+              <div key={title} className="text-center">
+                <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/15 ring-1 ring-white/25 flex items-center justify-center text-2xl">
+                  {emoji}
+                </div>
+                <h4 className="text-base font-bold text-white">{title}</h4>
+                <p className="text-sm text-cream-100/80 mt-1 leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>

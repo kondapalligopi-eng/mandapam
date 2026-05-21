@@ -1,4 +1,4 @@
-import { KARNATAKA_DISTRICTS } from './karnataka';
+import { KARNATAKA_DISTRICTS, CITY_LOCALITIES } from './karnataka';
 
 export type Mandapam = {
   slug: string;
@@ -11,6 +11,8 @@ export type Mandapam = {
   capacityMax: number;
   priceFrom: number;       // INR per day, starting price
   priceLabel: string;      // pretty-printed, e.g. "₹85,000 – ₹2.5L per day"
+  perPlateVeg: number;     // INR per veg plate, starting
+  promotion?: number;      // optional discount % for "Deals"
   rating: number;          // 0–5
   reviews: number;
   features: string[];
@@ -34,6 +36,8 @@ const CURATED: Mandapam[] = [
     capacityMax: 1200,
     priceFrom: 85000,
     priceLabel: '₹85,000 – ₹2.5L per day',
+    perPlateVeg: 850,
+    promotion: 10,
     rating: 4.7,
     reviews: 312,
     features: [
@@ -61,6 +65,7 @@ const CURATED: Mandapam[] = [
     capacityMax: 800,
     priceFrom: 60000,
     priceLabel: '₹60,000 – ₹1.8L per day',
+    perPlateVeg: 700,
     rating: 4.5,
     reviews: 198,
     features: [
@@ -88,6 +93,7 @@ const CURATED: Mandapam[] = [
     capacityMax: 700,
     priceFrom: 95000,
     priceLabel: '₹95,000 – ₹3L per day',
+    perPlateVeg: 1100,
     rating: 4.8,
     reviews: 156,
     features: [
@@ -115,6 +121,8 @@ const CURATED: Mandapam[] = [
     capacityMax: 2000,
     priceFrom: 1500_00,
     priceLabel: '₹1.5L – ₹5L per day',
+    perPlateVeg: 950,
+    promotion: 5,
     rating: 4.6,
     reviews: 421,
     features: [
@@ -142,6 +150,7 @@ const CURATED: Mandapam[] = [
     capacityMax: 600,
     priceFrom: 75000,
     priceLabel: '₹75,000 – ₹2L per day',
+    perPlateVeg: 800,
     rating: 4.4,
     reviews: 102,
     features: [
@@ -169,6 +178,8 @@ const CURATED: Mandapam[] = [
     capacityMax: 1500,
     priceFrom: 2000_00,
     priceLabel: '₹2L – ₹6L per day',
+    perPlateVeg: 1800,
+    promotion: 5,
     rating: 4.9,
     reviews: 87,
     features: [
@@ -194,14 +205,19 @@ const CURATED: Mandapam[] = [
 const kebab = (s: string) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
+// One template per venue type so every "Type" filter has matching venues.
 const NAME_TEMPLATES = [
-  'Sri {deity} Kalyana Mantapa',
-  '{place} Grand Convention',
-  '{place} Gardens',
-  'Sri {deity} Mahal',
-  '{place} Kalyana Bhavana',
-  '{deity} Residency & Hall',
+  'Sri {deity} Kalyana Mantapa', // Mandapam
+  'Hotel {place} Grand',         // Hotel
+  '{place} Farmhouse & Lawns',   // Farmhouse
+  '{place} Garden Court',        // Marriage Garden
+  '{deity} Resort',              // Resort
+  '{deity} Palace',              // Palace/Fort
+  '{place} Banquets',            // Banquet
+  '{place} Community Hall',      // Marriage or Community Halls
+  '{place} Open Lawns',          // Lawn
 ];
+const PLATE_TIERS = [450, 650, 850, 1100, 1400, 1800, 2200, 2800];
 const DEITIES = ['Lakshmi', 'Venkateshwara', 'Rama', 'Krishna', 'Shiva', 'Ganesha', 'Durga', 'Saraswathi', 'Anjaneya', 'Basaveshwara'];
 const EMOJIS = ['🛕', '🕌', '🎊', '🌸', '🌿', '👑', '💒', '🏛️'];
 const TINTS = [
@@ -243,40 +259,48 @@ const GENERATED: Mandapam[] = (() => {
   const out: Mandapam[] = [];
   let id = 7; // continue past the curated venues
   for (const { district, taluks } of KARNATAKA_DISTRICTS) {
-    if (district === 'Bengaluru Urban') continue; // already covered by CURATED
-    const picks = taluks.slice(0, 3); // a few surrounding taluks
-    for (const taluk of picks) {
-      id += 1;
-      const deity = DEITIES[id % DEITIES.length];
-      const name = NAME_TEMPLATES[id % NAME_TEMPLATES.length]
-        .replace('{deity}', deity)
-        .replace('{place}', taluk);
-      const tier = id % 4;
-      const cap = CAP_TIERS[tier];
-      const price = PRICE_TIERS[tier];
-      const start = id % FEATURES_POOL.length;
-      const features = Array.from({ length: 4 }, (_, k) => FEATURES_POOL[(start + k) % FEATURES_POOL.length]);
-      out.push({
-        slug: `${kebab(district)}-${kebab(taluk)}-${id}`,
-        name,
-        locality: taluk,
-        city: taluk,
-        district,
-        taluk,
-        capacityMin: cap.min,
-        capacityMax: cap.max,
-        priceFrom: price.from,
-        priceLabel: price.label,
-        rating: Math.round((4.2 + ((id * 3) % 7) / 10) * 10) / 10,
-        reviews: 30 + (id * 17) % 280,
-        features,
-        description: `A well-appointed kalyana mantapa in ${taluk}, ${district} district — a popular choice for weddings and receptions in and around ${taluk}.`,
-        emoji: EMOJIS[id % EMOJIS.length],
-        tint: TINTS[id % TINTS.length],
-        phone: `+91 9${String(400000000 + (id * 1234567) % 599999999).padStart(9, '0')}`,
-        address: `${taluk}, ${district}, Karnataka`,
-      });
-    }
+    const cityLocs = CITY_LOCALITIES[district]; // city areas, if any
+    // Generate ~2 venues for every locality/town so each one has venues.
+    const locs = cityLocs ?? taluks;
+    locs.forEach((loc, j) => {
+      const taluk = cityLocs ? taluks[j % taluks.length] : loc; // rural: town == locality
+      for (let n = 0; n < 2; n += 1) {
+        id += 1;
+        const deity = DEITIES[id % DEITIES.length];
+        const name = NAME_TEMPLATES[id % NAME_TEMPLATES.length]
+          .replace('{deity}', deity)
+          .replace('{place}', loc);
+        const tier = id % 4;
+        const perPlateVeg = PLATE_TIERS[id % PLATE_TIERS.length];
+        const promotion = id % 8 === 0 ? 10 : id % 4 === 0 ? 5 : undefined;
+        const cap = CAP_TIERS[tier];
+        const price = PRICE_TIERS[tier];
+        const start = id % FEATURES_POOL.length;
+        const features = Array.from({ length: 4 }, (_, k) => FEATURES_POOL[(start + k) % FEATURES_POOL.length]);
+        out.push({
+          slug: `${kebab(district)}-${kebab(loc)}-${id}`,
+          name,
+          locality: loc,
+          city: cityLocs ? loc : taluk,
+          district,
+          taluk,
+          capacityMin: cap.min,
+          capacityMax: cap.max,
+          priceFrom: price.from,
+          priceLabel: price.label,
+          perPlateVeg,
+          promotion,
+          rating: Math.round((4.2 + ((id * 3) % 7) / 10) * 10) / 10,
+          reviews: 30 + (id * 17) % 280,
+          features,
+          description: `A well-appointed kalyana mantapa in ${loc}, ${district} district — a popular choice for weddings and receptions in and around ${loc}.`,
+          emoji: EMOJIS[id % EMOJIS.length],
+          tint: TINTS[id % TINTS.length],
+          phone: `+91 9${String(400000000 + (id * 1234567) % 599999999).padStart(9, '0')}`,
+          address: `${loc}, ${district}, Karnataka`,
+        });
+      }
+    });
   }
   return out;
 })();

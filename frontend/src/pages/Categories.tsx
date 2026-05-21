@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Real category photos pulled by keyword from LoremFlickr — topical but not
 // the reference screenshot's images. `lock` keeps each tile stable per load.
@@ -28,12 +28,24 @@ const WEDDING_CATEGORIES: {
 ];
 
 export function Categories() {
+  const navigate = useNavigate();
+  const goBack = () => (typeof window !== 'undefined' && window.history.length > 1 ? navigate(-1) : navigate('/'));
   return (
     <div className="bg-cream-50">
       {/* ── Page header ──────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-paisley text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/25 via-orange-400/15 to-yellow-300/30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/90 hover:text-white mb-4 transition-colors"
+          >
+            <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
           <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-gold-300 uppercase mb-2">
             Plan the whole wedding
           </p>
@@ -109,13 +121,13 @@ export function Categories() {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-3">
               {[
-                { title: 'Wedding Card Designs', emoji: '💌', desc: 'Printable & digital cards' },
-                { title: 'Invitation Video Templates', emoji: '🎬', desc: 'Animated video invites' },
-                { title: 'Save the Date Templates', emoji: '📅', desc: 'Announce your big day' },
-              ].map(({ title, emoji, desc }) => (
+                { title: 'Wedding Card Designs', emoji: '💌', desc: 'Printable & digital cards', to: '/invitation-cards' },
+                { title: 'Invitation Video Templates', emoji: '🎬', desc: 'Animated video invites', to: '/invitation-cards?tab=video' },
+                { title: 'Save the Date Templates', emoji: '📅', desc: 'Announce your big day', to: '/invitation-cards?tab=save' },
+              ].map(({ title, emoji, desc, to }) => (
                 <Link
                   key={title}
-                  to="/contact"
+                  to={to}
                   className="group flex items-center gap-3 rounded-xl bg-white/80 hover:bg-white ring-1 ring-rose-200/70 hover:ring-pink-300 px-4 py-3 transition-all"
                 >
                   <span aria-hidden="true" className="text-2xl shrink-0">{emoji}</span>
