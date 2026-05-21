@@ -31,8 +31,18 @@ export function MandapamDetail() {
       {/* Hero banner */}
       <section className={`relative overflow-hidden bg-gradient-to-br ${m.tint} text-white`}>
         <div className="absolute inset-0 bg-black/15" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 flex flex-col sm:flex-row items-start sm:items-end gap-6">
-          <span aria-hidden="true" className="text-[120px] sm:text-[160px] leading-none drop-shadow-2xl">{m.emoji}</span>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <Link
+            to="/mandapams"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/90 hover:text-white mb-6 transition-colors"
+          >
+            <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to results
+          </Link>
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-6">
+            <span aria-hidden="true" className="text-[120px] sm:text-[160px] leading-none drop-shadow-2xl">{m.emoji}</span>
           <div className="flex-1">
             <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-white/90 uppercase mb-1">
               {m.locality} · {m.city}
@@ -56,21 +66,9 @@ export function MandapamDetail() {
               </span>
             </div>
           </div>
+          </div>
         </div>
       </section>
-
-      {/* Back link */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-        <Link
-          to="/mandapams"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-warm-300 text-warm-700 text-sm font-semibold hover:border-maroon-500 hover:text-maroon-700 hover:shadow-sm transition-all"
-        >
-          <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-          </svg>
-          Back to results
-        </Link>
-      </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
         {/* Main column */}
@@ -104,6 +102,33 @@ export function MandapamDetail() {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section className="mb-10">
+            <h2
+              className="text-2xl text-maroon-900 mb-4"
+              style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+            >
+              Location
+            </h2>
+            <p className="text-sm text-warm-700 mb-3">📍 {m.address}</p>
+            <div className="rounded-2xl overflow-hidden border-2 border-cream-200 shadow-sm">
+              <iframe
+                title={`Map of ${m.name}`}
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${m.name}, ${m.address}`)}&z=13&output=embed`}
+                className="w-full h-72 sm:h-80 border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${m.name}, ${m.address}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold text-maroon-700 hover:text-maroon-900 hover:underline"
+            >
+              Open in Google Maps →
+            </a>
           </section>
         </div>
 

@@ -49,3 +49,33 @@ export const ALL_LOCATIONS: string[] = Array.from(
 export function taluksOf(district: string): string[] {
   return KARNATAKA_DISTRICTS.find((d) => d.district === district)?.taluks ?? [];
 }
+
+// Well-known localities/areas for the larger cities. Districts not listed here
+// fall back to their taluks (towns) as "localities".
+export const CITY_LOCALITIES: Record<string, string[]> = {
+  'Bengaluru Urban': [
+    'Indiranagar', 'Koramangala', 'Jayanagar', 'JP Nagar', 'Malleshwaram', 'Hebbal', 'Whitefield',
+    'Electronic City', 'Marathahalli', 'HSR Layout', 'Banashankari', 'Basavanagudi', 'Rajajinagar',
+    'Yelahanka', 'Sarjapur Road', 'Bellandur', 'BTM Layout', 'Sadashivanagar', 'Rajarajeshwari Nagar',
+    'KR Puram', 'Bommanahalli', 'Vijayanagar', 'Hennur', 'Kengeri', 'Banaswadi', 'Frazer Town', 'Ulsoor',
+    'Kammanahalli', 'Jalahalli', 'Nagarbhavi',
+  ],
+  Mysuru: [
+    'Vijayanagar', 'Kuvempunagar', 'Gokulam', 'Jayalakshmipuram', 'Saraswathipuram', 'Vontikoppal',
+    'Nazarbad', 'Hebbal Mysuru', 'Bogadi', 'Hinkal', 'Lashkar Mohalla', 'Chamundipuram', 'Yadavagiri',
+  ],
+  'Dakshina Kannada': [
+    'Hampankatta', 'Kadri', 'Bejai', 'Kankanady', 'Surathkal', 'Bondel', 'Falnir', 'Balmatta',
+    'Mannagudda', 'Kuloor', 'Pumpwell', 'Deralakatte',
+  ],
+  Dharwad: [
+    'Vidyanagar', 'Gokul Road', 'Keshwapur', 'Saptapur', 'Kelageri', 'Navanagar', 'Vidyagiri',
+    'Unkal', 'Akshay Colony', 'Toll Naka',
+  ],
+  Belagavi: ['Tilakwadi', 'Camp', 'Shahapur', 'Sadashiv Nagar', 'Vadgaon', 'Hindwadi', 'Angol', 'Nehru Nagar'],
+  Kalaburagi: ['Brahmapur', 'Sedam Road', 'Aiwan-e-Shahi', 'Jewargi Road', 'Naya Mohalla', 'Sunder Nagar'],
+};
+
+export function localitiesOf(district: string): string[] {
+  return CITY_LOCALITIES[district] ?? taluksOf(district);
+}

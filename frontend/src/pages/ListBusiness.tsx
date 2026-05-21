@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { SERVICES, SERVICE_CITIES } from '@/data/services';
+import { submitForm } from '@/lib/submitForm';
 
 // Category options: Venues (the mandapam directory) + every service category.
 const CATEGORY_OPTIONS = [
@@ -15,6 +16,8 @@ const MAX_PHOTOS = 8;
 type Photo = { file: File; url: string };
 
 export function ListBusiness() {
+  const navigate = useNavigate();
+  const goBack = () => (typeof window !== 'undefined' && window.history.length > 1 ? navigate(-1) : navigate('/'));
   const [searchParams] = useSearchParams();
   const presetCategory = searchParams.get('category') ?? '';
 
@@ -77,12 +80,28 @@ export function ListBusiness() {
     }
     setError(null);
     setSubmitting(true);
-    // Simulated submit — wire to a real backend / upload endpoint later.
-    await new Promise((r) => setTimeout(r, 600));
-    setSubmitting(false);
-    setSubmitted(true);
-    photos.forEach((p) => URL.revokeObjectURL(p.url));
-    setPhotos([]);
+    const categoryLabel = CATEGORY_OPTIONS.find((c) => c.value === form.category)?.label ?? form.category;
+    try {
+      await submitForm(`New listing: ${form.businessName} (${categoryLabel})`, {
+        business_name: form.businessName,
+        category: categoryLabel,
+        city: form.city,
+        contact_person: form.contactName,
+        phone: form.phone,
+        email: form.email,
+        price_range: form.priceRange || '—',
+        website: form.website || '—',
+        about: form.description,
+        photos_attached: `${photos.length} (request from applicant by email)`,
+      });
+      setSubmitted(true);
+      photos.forEach((p) => URL.revokeObjectURL(p.url));
+      setPhotos([]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not submit. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputClass =
@@ -94,6 +113,16 @@ export function ListBusiness() {
       <section className="relative overflow-hidden bg-paisley text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/25 via-orange-400/15 to-yellow-300/30" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/90 hover:text-white mb-4 transition-colors"
+          >
+            <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
           <p className="text-[11px] sm:text-xs font-semibold tracking-[0.3em] text-gold-300 uppercase mb-2">
             Grow with ShubhMandap
           </p>
@@ -318,6 +347,96 @@ export function ListBusiness() {
           <p className="text-center text-xs text-warm-500 mt-6">
             Questions? <a href="mailto:partners@shubhmandap.in" className="text-maroon-700 hover:underline font-semibold">partners@shubhmandap.in</a>
           </p>
+        </div>
+      </section>
+
+      {/* ── Showcase your business ───────────────────────────────────── */}
+      <section className="py-12 sm:py-16 bg-white border-t border-cream-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            className="text-2xl sm:text-3xl text-maroon-900 text-center mb-10"
+            style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+          >
+            Showcase your business
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <ul className="space-y-6">
+              {[
+                { icon: '🖼️', text: 'Be visible to couples across Karnataka with a custom, mobile-friendly storefront for your business.' },
+                { icon: '✉️', text: 'Reach more engaged couples and receive enquiry details immediately to your email and phone.' },
+                { icon: '🧑‍💼', text: 'Track performance and get expert advice to help you make the most of your listing.' },
+              ].map(({ icon, text }) => (
+                <li key={text} className="flex items-start gap-4">
+                  <span aria-hidden="true" className="w-12 h-12 shrink-0 rounded-xl bg-cream-100 ring-1 ring-cream-200 flex items-center justify-center text-2xl">{icon}</span>
+                  <p className="text-sm sm:text-base text-warm-700 leading-relaxed pt-1.5">{text}</p>
+                </li>
+              ))}
+            </ul>
+
+            {/* Storefront preview mock */}
+            <div className="rounded-2xl bg-gradient-to-br from-cream-100 to-cream-50 ring-1 ring-cream-200 p-5 shadow-sm">
+              <div className="rounded-xl bg-white ring-1 ring-cream-200 overflow-hidden shadow">
+                <div className="aspect-[16/10] bg-gradient-to-br from-rose-400 to-gold-300 flex items-center justify-center text-6xl">📸</div>
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="font-bold text-maroon-900" style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800 }}>Your Business Name</p>
+                    <span className="px-2 py-0.5 rounded-full bg-gold-400 text-maroon-900 text-[10px] font-bold">★ 4.9</span>
+                  </div>
+                  <p className="text-xs text-warm-500 mt-0.5">📍 Your City, Karnataka · 26 reviews</p>
+                  <div className="mt-3 flex gap-2">
+                    <span className="flex-1 text-center text-[11px] font-bold uppercase tracking-wider bg-maroon-600 text-white rounded-full py-1.5">Get more info</span>
+                    <span className="px-3 text-center text-[11px] font-bold uppercase tracking-wider border-2 border-cream-300 text-warm-600 rounded-full py-1">♡</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Manage & track growth ────────────────────────────────────── */}
+      <section className="py-12 sm:py-16 bg-cream-50 border-t border-cream-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2
+            className="text-2xl sm:text-3xl text-maroon-900 text-center mb-10"
+            style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
+          >
+            Manage your business and track your growth
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            {/* Stats card */}
+            <div className="rounded-2xl bg-white ring-1 ring-cream-200 shadow-sm p-6 sm:p-8 grid grid-cols-2 gap-6">
+              {[
+                { icon: '✉️', value: '227', label: 'Enquiries received', sub: 'in the last 12 months' },
+                { icon: '⏱️', value: '00h 45m', label: 'Avg. response time', sub: 'in the last 12 months' },
+                { icon: '⭐', value: '26', label: 'Reviews', sub: 'from happy couples' },
+                { icon: '👁️', value: '19,282', label: 'Storefront views', sub: 'in the last 12 months' },
+              ].map(({ icon, value, label, sub }) => (
+                <div key={label}>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-maroon-800 flex items-center gap-2">
+                    <span aria-hidden="true" className="text-xl">{icon}</span>{value}
+                  </p>
+                  <p className="text-sm font-semibold text-warm-800 mt-1">{label}</p>
+                  <p className="text-xs text-warm-500">{sub}</p>
+                </div>
+              ))}
+            </div>
+
+            <ul className="space-y-6">
+              {[
+                { icon: '🛠️', text: 'Customise your storefront by adding a business description, photos, service details and more.' },
+                { icon: '🔔', text: 'Get notified instantly about new leads and messages by email and phone so you can respond quickly.' },
+                { icon: '📊', text: 'Request reviews from couples and monitor your analytics to keep growing.' },
+              ].map(({ icon, text }) => (
+                <li key={text} className="flex items-start gap-4">
+                  <span aria-hidden="true" className="w-12 h-12 shrink-0 rounded-xl bg-white ring-1 ring-cream-200 flex items-center justify-center text-2xl">{icon}</span>
+                  <p className="text-sm sm:text-base text-warm-700 leading-relaxed pt-1.5">{text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <p className="text-center text-xs text-warm-400 mt-8">Figures shown are illustrative.</p>
         </div>
       </section>
     </div>

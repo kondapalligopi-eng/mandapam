@@ -11,7 +11,7 @@ export function About() {
             className="text-3xl sm:text-5xl text-white leading-tight"
             style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
           >
-            Built for Bengaluru weddings
+            Built for Karnataka weddings
           </h1>
           <div className="mt-3 h-0.5 w-16 bg-gold-400 rounded-full" />
         </div>
@@ -20,12 +20,12 @@ export function About() {
       <section className="py-12 sm:py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-warm-800 leading-relaxed">
           <p className="text-lg">
-            ShubhMandap started with a frustration every Bengaluru family knows: planning a
+            ShubhMandap started with a frustration every Karnataka family knows: planning a
             wedding means juggling photocopied brochures, WhatsApp forwards, and the same five
             hall agents quoting wildly different numbers for the same venue.
           </p>
           <p>
-            We built ShubhMandap to put every Kalyana Mandapam in the city on a single page —
+            We built ShubhMandap to put every Kalyana Mandapam across the state on a single page —
             capacity, real day rates, what's included, photos that match the venue, and a phone
             number that connects you to the actual manager. No commission. No "your friend's
             wedding got a special rate, we can match it" games.
@@ -33,7 +33,7 @@ export function About() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-6">
             {[
-              { stat: '40+', label: 'Venues across Bengaluru' },
+              { stat: '100+', label: 'Venues across Karnataka' },
               { stat: '100%', label: 'Vetted in person' },
               { stat: '₹0', label: 'Commission, ever' },
             ].map(({ stat, label }) => (

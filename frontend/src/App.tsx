@@ -6,6 +6,7 @@ import { MandapamDetail } from '@/pages/MandapamDetail';
 import { Categories } from '@/pages/Categories';
 import { ServiceCategory } from '@/pages/ServiceCategory';
 import { ListBusiness } from '@/pages/ListBusiness';
+import { InvitationCards } from '@/pages/InvitationCards';
 import { About } from '@/pages/About';
 import { Contact } from '@/pages/Contact';
 import { MANDAPAMS } from '@/data/mandapams';
@@ -32,6 +33,7 @@ export const routes: RouteRecord[] = [
         getStaticPaths: () => Object.keys(SERVICES).map((slug) => `/services/${slug}`),
       },
       { path: 'list-your-business', Component: ListBusiness },
+      { path: 'invitation-cards', Component: InvitationCards },
       { path: 'about', Component: About },
       { path: 'contact', Component: Contact },
     ],

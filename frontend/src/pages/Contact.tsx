@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { submitForm } from '@/lib/submitForm';
 
 const TOPICS = [
   'Wedding enquiry',
@@ -21,11 +22,21 @@ export function Contact() {
     }
     setError(null);
     setSubmitting(true);
-    // For now this just simulates a submit — wire to a real backend / FormSubmit hash later.
-    await new Promise((r) => setTimeout(r, 500));
-    setSubmitting(false);
-    setSubmitted(true);
-    setForm({ name: '', email: '', phone: '', topic: '', message: '' });
+    try {
+      await submitForm(`Enquiry: ${form.topic}`, {
+        name: form.name,
+        email: form.email,
+        phone: form.phone || '—',
+        topic: form.topic,
+        message: form.message,
+      });
+      setSubmitted(true);
+      setForm({ name: '', email: '', phone: '', topic: '', message: '' });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not send. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
