@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { getService, type Vendor } from '@/data/services';
+import { ALL_LOCATIONS } from '@/data/karnataka';
 
 const readAsDataURL = (file: File) =>
   new Promise<string>((resolve, reject) => {
@@ -57,10 +58,12 @@ export function ServiceCategory() {
     () => (service ? Array.from(new Set(service.vendors.map((v) => v.specialty))).sort() : []),
     [service],
   );
-  const locations = useMemo(
-    () => (service ? Array.from(new Set(service.vendors.map((v) => v.city))).sort() : []),
-    [service],
-  );
+  // All Karnataka districts, taluks & towns — plus any vendor cities that
+  // aren't already in that list — so the dropdown covers every location.
+  const locations = useMemo(() => {
+    const vendorCities = service ? service.vendors.map((v) => v.city) : [];
+    return Array.from(new Set([...vendorCities, ...ALL_LOCATIONS])).sort();
+  }, [service]);
 
   const results = useMemo(() => {
     if (!service) return [];

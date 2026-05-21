@@ -37,6 +37,15 @@ export const KARNATAKA_DISTRICTS: { district: string; taluks: string[] }[] = [
 
 export const DISTRICT_NAMES = KARNATAKA_DISTRICTS.map((d) => d.district);
 
+// Every selectable location across Karnataka — districts + taluks/towns,
+// de-duplicated and sorted. Used for location dropdowns.
+export const ALL_LOCATIONS: string[] = Array.from(
+  new Set([
+    ...KARNATAKA_DISTRICTS.map((d) => d.district),
+    ...KARNATAKA_DISTRICTS.flatMap((d) => d.taluks),
+  ]),
+).sort();
+
 export function taluksOf(district: string): string[] {
   return KARNATAKA_DISTRICTS.find((d) => d.district === district)?.taluks ?? [];
 }
