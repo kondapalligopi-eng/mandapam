@@ -1,32 +1,14 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MANDAPAMS } from '@/data/mandapams';
 import { DISTRICT_NAMES, taluksOf } from '@/data/karnataka';
 
-const countByDistrict = (d: string) => MANDAPAMS.filter((m) => m.district === d).length;
 const CAPACITY_BUCKETS = [
   { label: 'Any capacity', min: 0,    max: 99999 },
   { label: 'Up to 500',     min: 0,    max: 500   },
   { label: '500 – 1,000',   min: 500,  max: 1000  },
   { label: '1,000 – 1,500', min: 1000, max: 1500  },
   { label: '1,500+',        min: 1500, max: 99999 },
-];
-
-const cityPhoto = (keywords: string, lock: number) =>
-  `https://loremflickr.com/400/520/${keywords}?lock=${lock}`;
-
-// Showcase carousel — top cities mapped to the district they filter by.
-const TOP_CITIES: { name: string; district: string; img: string }[] = [
-  { name: 'Bengaluru', district: 'Bengaluru Urban', img: cityPhoto('bangalore,city', 81) },
-  { name: 'Mysuru', district: 'Mysuru', img: cityPhoto('mysore,palace', 82) },
-  { name: 'Mangaluru', district: 'Dakshina Kannada', img: cityPhoto('mangalore,beach', 83) },
-  { name: 'Hubballi', district: 'Dharwad', img: cityPhoto('hubli,city', 84) },
-  { name: 'Belagavi', district: 'Belagavi', img: cityPhoto('belgaum,fort', 85) },
-  { name: 'Udupi', district: 'Udupi', img: cityPhoto('udupi,temple', 86) },
-  { name: 'Shivamogga', district: 'Shivamogga', img: cityPhoto('shimoga,waterfall', 87) },
-  { name: 'Tumakuru', district: 'Tumakuru', img: cityPhoto('temple,karnataka', 88) },
-  { name: 'Hassan', district: 'Hassan', img: cityPhoto('belur,temple', 89) },
-  { name: 'Hampi', district: 'Vijayanagara', img: cityPhoto('hampi,ruins', 90) },
 ];
 
 export function Mandapams() {
@@ -47,16 +29,6 @@ export function Mandapams() {
     );
     return Array.from(new Set(pool.map((m) => m.locality))).sort();
   }, [district, taluk]);
-
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const scrollCarousel = (dir: 1 | -1) =>
-    scrollerRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' });
-
-  const pickCity = (cityDistrict: string) => {
-    setDistrict(cityDistrict);
-    setTaluk('All');
-    document.getElementById('venue-results')?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -111,72 +83,6 @@ export function Mandapams() {
             <p className="mt-2 text-sm text-cream-100/85 max-w-2xl">
               Filter by area or guest count and dive into individual venues for capacity, pricing, and direct phone numbers.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Top Venues by City */}
-      <section className="py-10 sm:py-12 bg-cream-50 border-b border-cream-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between gap-4 mb-6">
-            <div>
-              <h2
-                className="text-2xl sm:text-3xl text-maroon-900"
-                style={{ fontFamily: '"Plus Jakarta Sans", Inter, system-ui, sans-serif', fontWeight: 800, letterSpacing: '-0.02em' }}
-              >
-                Top Venues by City
-              </h2>
-              <p className="text-sm text-warm-600 mt-1 max-w-xl">
-                Start your happily-ever-after in the most breath-taking venues across Karnataka.
-              </p>
-            </div>
-            <div className="flex gap-2 shrink-0">
-              <button
-                type="button"
-                onClick={() => scrollCarousel(-1)}
-                aria-label="Scroll left"
-                className="w-10 h-10 rounded-full border-2 border-warm-300 text-warm-600 hover:border-maroon-400 hover:text-maroon-700 flex items-center justify-center transition-colors"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollCarousel(1)}
-                aria-label="Scroll right"
-                className="w-10 h-10 rounded-full bg-maroon-600 hover:bg-maroon-700 text-white flex items-center justify-center transition-colors shadow"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-
-          <div
-            ref={scrollerRef}
-            className="flex gap-4 overflow-x-auto snap-x scroll-smooth pb-2 -mb-2"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            {TOP_CITIES.map((c) => (
-              <button
-                key={c.name}
-                type="button"
-                onClick={() => pickCity(c.district)}
-                className="group relative shrink-0 w-44 sm:w-52 aspect-[3/4] rounded-2xl overflow-hidden snap-start ring-1 ring-black/5 shadow-sm hover:shadow-lg transition-shadow text-left"
-              >
-                <img
-                  src={c.img}
-                  alt={c.name}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                  <p className="text-lg font-bold leading-tight drop-shadow">{c.name}</p>
-                  <p className="text-xs text-white/90 mt-0.5 flex items-center gap-1">
-                    {countByDistrict(c.district)} properties <span aria-hidden="true">›</span>
-                  </p>
-                </div>
-              </button>
-            ))}
           </div>
         </div>
       </section>
@@ -253,7 +159,7 @@ export function Mandapams() {
       </section>
 
       {/* Results */}
-      <section id="venue-results" className="scroll-mt-4 py-10">
+      <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold-100 ring-1 ring-gold-300 text-sm shadow-sm">
             <span className="text-base font-extrabold text-gold-700">{filtered.length}</span>
